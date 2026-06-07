@@ -269,6 +269,15 @@
             80% { opacity: 1; }
             100% { transform: translate3d(-200px, 180px, -20px) scale(1); opacity: 0; } 
         }
+        
+        /* Animasi Garis Penghubung Langkah */
+        @keyframes slide-right {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(500%); }
+        }
+        .animate-slide-right {
+            animation: slide-right 3s linear infinite;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-brand-500 selection:text-white">
@@ -432,7 +441,7 @@
                                 <div class="bg-[#202C33] pt-10 pb-4 px-4 flex flex-col items-center justify-center border-b border-white/5 relative z-10">
                                     <h3 class="text-white font-bold text-sm">Promo Akhir Tahun</h3>
                                     <div class="flex items-center gap-1 text-[10px] text-brand-400 mt-1">
-                                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span> Mengirim ke 8,450 Kontak...
+                                        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span> Mengirim Massal...
                                     </div>
                                 </div>
 
@@ -440,32 +449,85 @@
                                 <div class="flex-1 p-5 flex flex-col items-center relative" style="background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 10px 10px;">
                                     
                                     <!-- Central Progress Circle -->
-                                    <div class="relative w-36 h-36 mb-6 mt-4">
+                                    <div class="relative w-32 h-32 mb-4 mt-2">
                                         <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                                             <!-- Background circle -->
                                             <circle cx="50" cy="50" r="45" fill="transparent" stroke="#1E293B" stroke-width="8"></circle>
-                                            <!-- Progress circle -->
-                                            <circle cx="50" cy="50" r="45" fill="transparent" stroke="#22c55e" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="60" class="transition-all duration-1000"></circle>
+                                            <!-- Progress circle (Animated Pulse) -->
+                                            <circle cx="50" cy="50" r="45" fill="transparent" stroke="#22c55e" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="60" class="animate-[pulseProgress_2s_ease-in-out_infinite] transition-all"></circle>
                                         </svg>
                                         <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                            <span class="text-3xl font-bold text-white">78%</span>
-                                            <span class="text-[9px] text-gray-400">Selesai</span>
+                                            <i class="fa-solid fa-paper-plane text-brand-500 text-2xl animate-bounce mb-1"></i>
+                                            <span class="text-[8px] text-brand-400 font-bold tracking-widest uppercase animate-pulse">Sending...</span>
                                         </div>
                                     </div>
 
-                                    <!-- Action Logs -->
-                                    <div class="w-full bg-[#1E293B] rounded-xl p-3 space-y-2 mt-auto">
-                                        <div class="flex justify-between items-center text-[10px]">
-                                            <span class="text-gray-300">08123344...</span>
-                                            <span class="text-brand-400 font-medium">Berhasil <i class="fa-solid fa-check"></i></span>
+                                    <!-- Live Stats -->
+                                    <div class="w-full grid grid-cols-2 gap-2 mb-3 z-10">
+                                        <div class="bg-[#1E293B] rounded-lg py-1.5 px-2 text-center border border-white/5 shadow-inner">
+                                            <div class="text-[9px] text-gray-400 mb-0.5">Terkirim</div>
+                                            <div class="text-xs font-bold text-brand-400 flex items-center justify-center gap-1">
+                                                <span id="live-sent-count">8,450</span> <i class="fa-solid fa-caret-up text-[10px]"></i>
+                                            </div>
                                         </div>
-                                        <div class="flex justify-between items-center text-[10px] border-t border-white/5 pt-2">
-                                            <span class="text-gray-300">08567788...</span>
-                                            <span class="text-brand-400 font-medium">Berhasil <i class="fa-solid fa-check"></i></span>
+                                        <div class="bg-[#1E293B] rounded-lg py-1.5 px-2 text-center border border-white/5 shadow-inner">
+                                            <div class="text-[9px] text-gray-400 mb-0.5">Antrean</div>
+                                            <div class="text-xs font-bold text-yellow-500 flex items-center justify-center gap-1">
+                                                <span id="live-queue-count">1,205</span> <i class="fa-solid fa-caret-down text-[10px]"></i>
+                                            </div>
                                         </div>
-                                        <div class="flex justify-between items-center text-[10px] border-t border-white/5 pt-2">
-                                            <span class="text-gray-300">Member VIP</span>
-                                            <span class="text-brand-400 font-medium">Berhasil <i class="fa-solid fa-check"></i></span>
+                                    </div>
+
+                                    <!-- Action Logs (Scrolling Animation) -->
+                                    <div class="w-full h-[85px] bg-[#1E293B] rounded-xl p-3 overflow-hidden relative border border-white/5 z-10">
+                                        <!-- Gradient Mask for smooth fade at top and bottom -->
+                                        <div class="absolute inset-0 bg-gradient-to-b from-[#1E293B] via-transparent to-[#1E293B] z-10 pointer-events-none"></div>
+                                        
+                                        <!-- Scrolling Content -->
+                                        <div class="space-y-2.5 animate-[logScroll_3s_linear_infinite]">
+                                            <!-- Group 1 -->
+                                            <div class="flex justify-between items-center text-[10px]">
+                                                <span class="text-gray-300"><i class="fa-brands fa-whatsapp text-brand-500 mr-1"></i> 0812-3344-xxxx</span>
+                                                <span class="text-brand-400 font-medium"><i class="fa-solid fa-check-double"></i></span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-[10px]">
+                                                <span class="text-gray-300"><i class="fa-brands fa-whatsapp text-brand-500 mr-1"></i> 0856-7788-xxxx</span>
+                                                <span class="text-brand-400 font-medium"><i class="fa-solid fa-check-double"></i></span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-[10px]">
+                                                <span class="text-gray-300"><i class="fa-brands fa-whatsapp text-brand-500 mr-1"></i> Member VIP 01</span>
+                                                <span class="text-brand-400 font-medium"><i class="fa-solid fa-check-double"></i></span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-[10px]">
+                                                <span class="text-gray-300"><i class="fa-brands fa-whatsapp text-brand-500 mr-1"></i> 0813-9999-xxxx</span>
+                                                <span class="text-brand-400 font-medium"><i class="fa-solid fa-check-double"></i></span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-[10px]">
+                                                <span class="text-gray-300"><i class="fa-brands fa-whatsapp text-brand-500 mr-1"></i> Reseller Aktif</span>
+                                                <span class="text-brand-400 font-medium"><i class="fa-solid fa-check-double"></i></span>
+                                            </div>
+                                            
+                                            <!-- Group 2 (Duplicate exactly for seamless scroll loop) -->
+                                            <div class="flex justify-between items-center text-[10px]">
+                                                <span class="text-gray-300"><i class="fa-brands fa-whatsapp text-brand-500 mr-1"></i> 0812-3344-xxxx</span>
+                                                <span class="text-brand-400 font-medium"><i class="fa-solid fa-check-double"></i></span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-[10px]">
+                                                <span class="text-gray-300"><i class="fa-brands fa-whatsapp text-brand-500 mr-1"></i> 0856-7788-xxxx</span>
+                                                <span class="text-brand-400 font-medium"><i class="fa-solid fa-check-double"></i></span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-[10px]">
+                                                <span class="text-gray-300"><i class="fa-brands fa-whatsapp text-brand-500 mr-1"></i> Member VIP 01</span>
+                                                <span class="text-brand-400 font-medium"><i class="fa-solid fa-check-double"></i></span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-[10px]">
+                                                <span class="text-gray-300"><i class="fa-brands fa-whatsapp text-brand-500 mr-1"></i> 0813-9999-xxxx</span>
+                                                <span class="text-brand-400 font-medium"><i class="fa-solid fa-check-double"></i></span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-[10px]">
+                                                <span class="text-gray-300"><i class="fa-brands fa-whatsapp text-brand-500 mr-1"></i> Reseller Aktif</span>
+                                                <span class="text-brand-400 font-medium"><i class="fa-solid fa-check-double"></i></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -581,68 +643,75 @@
     </section>
 
     <!-- Cara Kerja Section -->
-    <section id="cara-kerja" class="relative pt-24 lg:pt-32 pb-40 md:pb-56 bg-white z-20">
+    <section id="cara-kerja" class="relative pt-20 pb-40 md:pb-56 bg-white overflow-hidden">
         <!-- Decoration -->
         <div class="absolute right-[-5%] top-1/2 transform -translate-y-1/2 opacity-[0.02] pointer-events-none">
             <i class="fa-brands fa-whatsapp text-[500px]"></i>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center max-w-3xl mx-auto mb-24 reveal-up">
+            <div class="text-center max-w-3xl mx-auto mb-20 reveal-up">
                 <span class="text-blue-600 font-bold tracking-wider uppercase text-sm mb-3 block">Mudah Digunakan</span>
                 <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-dark-900 mb-6">Mulai dalam 3 Langkah Mudah</h2>
                 <p class="text-lg text-gray-600">Tidak perlu keahlian teknis. Desain UI kami dibuat sesederhana mungkin agar siapapun bisa langsung menggunakannya.</p>
             </div>
 
             <div class="relative max-w-5xl mx-auto">
-                <!-- Dashed Connection Line (Desktop) aligned with circles -->
-                <div class="hidden md:block absolute top-[48px] left-[16%] w-[68%] h-[2px] dashed-line z-0"></div>
+                <!-- Glowing Animated Connection Line (Desktop) -->
+                <div class="hidden md:block absolute top-[72px] left-[15%] w-[70%] h-[4px] bg-gradient-to-r from-blue-100 via-brand-200 to-purple-200 z-0 rounded-full overflow-hidden">
+                    <div class="absolute top-0 left-0 h-full w-32 bg-gradient-to-r from-transparent via-white to-transparent opacity-80 animate-slide-right"></div>
+                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
-                    <!-- Step 1 -->
-                    <div class="relative z-10 text-center reveal-up group">
-                        <div class="w-24 h-24 mx-auto bg-white border-[4px] border-gray-100 group-hover:border-blue-200 rounded-full flex items-center justify-center text-4xl text-blue-500 mb-8 relative z-10 shadow-lg group-hover:shadow-glow-blue group-hover:scale-110 transition-all duration-300">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 relative z-10">
+                    <!-- Step 1 Card -->
+                    <div class="bg-white rounded-[2rem] p-8 border border-gray-100 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_25px_50px_-12px_rgba(59,130,246,0.25)] transform hover:-translate-y-2 transition-all duration-500 group reveal-up relative overflow-hidden text-center cursor-default">
+                        <!-- Huge Number Watermark -->
+                        <div class="absolute -right-4 -top-8 text-[140px] font-black text-gray-50 opacity-50 group-hover:text-blue-50 group-hover:scale-110 transition-all duration-500 select-none">1</div>
+                        
+                        <div class="relative z-10 w-20 h-20 mx-auto bg-gradient-to-br from-blue-100 to-blue-50 border-4 border-white group-hover:border-blue-100 rounded-2xl rotate-6 group-hover:rotate-0 flex items-center justify-center text-3xl text-blue-500 mb-6 shadow-lg group-hover:shadow-glow-blue transition-all duration-300">
                             <i class="fa-solid fa-qrcode"></i>
-                            <div class="absolute -top-2 -right-2 w-8 h-8 bg-dark-900 text-white rounded-full flex items-center justify-center font-bold border-2 border-white text-sm shadow-md">1</div>
                         </div>
-                        <h4 class="text-2xl font-heading font-bold text-dark-900 mb-3">Scan Barcode</h4>
-                        <p class="text-gray-500 leading-relaxed text-sm px-4">Buka software WA Sender Pro di laptop, lalu tautkan nomor Anda dengan memindai QR Code via WhatsApp.</p>
+                        <h4 class="relative z-10 text-2xl font-heading font-bold text-dark-900 mb-3 group-hover:text-blue-600 transition-colors">Scan Barcode</h4>
+                        <p class="relative z-10 text-gray-500 leading-relaxed text-sm">Buka software WA Sender Pro di laptop, lalu tautkan nomor Anda dengan memindai QR Code via WhatsApp.</p>
                     </div>
 
-                    <!-- Step 2 -->
-                    <div class="relative z-10 text-center reveal-up group" style="transition-delay: 150ms;">
-                        <div class="w-24 h-24 mx-auto bg-white border-[4px] border-gray-100 group-hover:border-brand-200 rounded-full flex items-center justify-center text-4xl text-brand-500 mb-8 relative z-10 shadow-lg group-hover:shadow-glow group-hover:scale-110 transition-all duration-300">
+                    <!-- Step 2 Card -->
+                    <div class="bg-white rounded-[2rem] p-8 border border-gray-100 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_25px_50px_-12px_rgba(34,197,94,0.25)] transform hover:-translate-y-2 transition-all duration-500 group reveal-up relative overflow-hidden text-center cursor-default" style="transition-delay: 150ms;">
+                        <!-- Huge Number Watermark -->
+                        <div class="absolute -right-4 -top-8 text-[140px] font-black text-gray-50 opacity-50 group-hover:text-brand-50 group-hover:scale-110 transition-all duration-500 select-none">2</div>
+                        
+                        <div class="relative z-10 w-20 h-20 mx-auto bg-gradient-to-br from-brand-100 to-brand-50 border-4 border-white group-hover:border-brand-100 rounded-2xl -rotate-6 group-hover:rotate-0 flex items-center justify-center text-3xl text-brand-500 mb-6 shadow-lg group-hover:shadow-glow transition-all duration-300">
                             <i class="fa-solid fa-file-excel"></i>
-                            <div class="absolute -top-2 -right-2 w-8 h-8 bg-dark-900 text-white rounded-full flex items-center justify-center font-bold border-2 border-white text-sm shadow-md">2</div>
                         </div>
-                        <h4 class="text-2xl font-heading font-bold text-dark-900 mb-3">Import Target</h4>
-                        <p class="text-gray-500 leading-relaxed text-sm px-4">Masukkan daftar nomor tujuan (dari file Excel/TXT). Ketik pesan promosi Anda, tambahkan gambar jika ada.</p>
+                        <h4 class="relative z-10 text-2xl font-heading font-bold text-dark-900 mb-3 group-hover:text-brand-600 transition-colors">Import Target</h4>
+                        <p class="relative z-10 text-gray-500 leading-relaxed text-sm">Masukkan daftar nomor (dari Excel/TXT). Ketik pesan promosi Anda, tambahkan gambar jika ada.</p>
                     </div>
 
-                    <!-- Step 3 -->
-                    <div class="relative z-10 text-center reveal-up group" style="transition-delay: 300ms;">
-                        <div class="w-24 h-24 mx-auto bg-white border-[4px] border-gray-100 group-hover:border-purple-200 rounded-full flex items-center justify-center text-4xl text-purple-500 mb-8 relative z-10 shadow-lg group-hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] group-hover:scale-110 transition-all duration-300">
+                    <!-- Step 3 Card -->
+                    <div class="bg-white rounded-[2rem] p-8 border border-gray-100 shadow-[0_15px_40px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_25px_50px_-12px_rgba(168,85,247,0.25)] transform hover:-translate-y-2 transition-all duration-500 group reveal-up relative overflow-hidden text-center cursor-default" style="transition-delay: 300ms;">
+                        <!-- Huge Number Watermark -->
+                        <div class="absolute -right-4 -top-8 text-[140px] font-black text-gray-50 opacity-50 group-hover:text-purple-50 group-hover:scale-110 transition-all duration-500 select-none">3</div>
+                        
+                        <div class="relative z-10 w-20 h-20 mx-auto bg-gradient-to-br from-purple-100 to-purple-50 border-4 border-white group-hover:border-purple-100 rounded-2xl rotate-6 group-hover:rotate-0 flex items-center justify-center text-3xl text-purple-500 mb-6 shadow-lg group-hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all duration-300">
                             <i class="fa-solid fa-paper-plane"></i>
-                            <div class="absolute -top-2 -right-2 w-8 h-8 bg-dark-900 text-white rounded-full flex items-center justify-center font-bold border-2 border-white text-sm shadow-md">3</div>
                         </div>
-                        <h4 class="text-2xl font-heading font-bold text-dark-900 mb-3">Klik Kirim</h4>
-                        <p class="text-gray-500 leading-relaxed text-sm px-4">Tekan tombol Start dan biarkan software bekerja otomatis mengirimkan pesan ke semua pelanggan Anda.</p>
+                        <h4 class="relative z-10 text-2xl font-heading font-bold text-dark-900 mb-3 group-hover:text-purple-600 transition-colors">Klik Kirim</h4>
+                        <p class="relative z-10 text-gray-500 leading-relaxed text-sm">Tekan tombol Start dan biarkan software bekerja otomatis mengirim pesan ke semua pelanggan Anda.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Smooth Curve Divider with Drop Shadow (Cara Kerja to Harga) -->
-        <div class="absolute top-full left-0 w-full leading-[0] z-20 pointer-events-none -mt-[1px]">
-            <svg viewBox="0 0 1440 200" preserveAspectRatio="none" class="w-full h-[60px] md:h-[120px] block overflow-visible" style="filter: drop-shadow(0px 20px 25px rgba(0, 0, 0, 0.4));">
-                <path d="M0,0 C480,150 960,150 1440,0 L1440,0 L0,0 Z" fill="#ffffff"></path>
+        <!-- Perbaikan: Penutup Section & Elegant Wave Divider -->
+        <div class="shape-divider bottom-0">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none" class="h-[60px] md:h-[120px]" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0L48 10.7C96 21 192 43 288 48C384 53 480 43 576 37.3C672 32 768 32 864 42.7C960 53 1056 75 1152 74.7C1248 75 1344 53 1392 42.7L1440 32V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#0B1120" />
             </svg>
         </div>
     </section>
 
-    <!-- Pricing Section -->
-    <section id="harga" class="relative pt-32 lg:pt-40 pb-24 bg-dark-900 z-10 overflow-hidden">
-        
+    <!-- Perbaikan: Pembuka Section Pricing yang baru -->
+    <section id="harga" class="relative pt-16 pb-24 bg-dark-900 overflow-hidden z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
             <!-- Payment Badge Highlight -->
@@ -799,6 +868,65 @@
                 </div>
 
             </div>
+
+            <!-- Paket Reseller (Special Banner Horizontal) -->
+            <div class="mt-16 max-w-6xl mx-auto bg-gradient-to-r from-blue-900/40 to-dark-800 rounded-[2rem] p-[2px] shadow-[0_0_30px_rgba(59,130,246,0.15)] reveal-up relative group">
+                <!-- Border Gradient Animation effect -->
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 rounded-[2rem] opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
+
+                <div class="bg-dark-800 rounded-[1.85rem] p-8 md:p-10 flex flex-col lg:flex-row items-center gap-10 relative z-10 overflow-hidden">
+                    
+                    <!-- Background Decoration -->
+                    <div class="absolute -right-20 -top-20 opacity-5 pointer-events-none text-9xl">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+
+                    <!-- Left Info -->
+                    <div class="flex-1 text-center lg:text-left relative z-10">
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-wider mb-5">
+                            <i class="fa-solid fa-briefcase"></i> Peluang Bisnis
+                        </div>
+                        <h3 class="text-3xl font-heading font-extrabold text-white mb-4">
+                            Paket <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Reseller Pro</span>
+                        </h3>
+                        <p class="text-gray-400 mb-6 text-sm md:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                            Jadilah agen resmi kami dan raup keuntungan 100% dari penjualan Anda sendiri. Dapatkan panel admin khusus untuk men-generate kunci lisensi (Key) secara mandiri.
+                        </p>
+
+                        <!-- Prerequisite Warning Badge -->
+                        <div class="inline-flex flex-col sm:flex-row items-center sm:items-start gap-4 bg-red-500/10 border border-red-500/20 rounded-xl px-5 py-4 w-full md:w-auto text-left">
+                            <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0 mt-1 sm:mt-0">
+                                <i class="fa-solid fa-lock text-red-400"></i>
+                            </div>
+                            <div>
+                                <span class="block text-red-400 font-bold mb-1">Syarat Utama Pendaftaran:</span>
+                                <span class="text-gray-300 text-sm">Anda wajib memiliki <strong class="text-white border-b border-white/30 pb-0.5">Lisensi Lifetime</strong> aktif sebelum dapat meng-upgrade ke paket ini.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Details & Action -->
+                    <div class="w-full lg:w-[380px] bg-dark-900/60 rounded-2xl p-6 border border-white/5 flex flex-col relative z-10">
+                        <div class="mb-6 text-center lg:text-left">
+                            <span class="block text-sm text-gray-400 mb-1">Biaya Upgrade</span>
+                            <span class="text-4xl font-extrabold text-white">Rp 2.500<span class="text-2xl text-gray-500">.000</span></span>
+                        </div>
+
+                        <ul class="space-y-4 mb-8 text-sm text-gray-300">
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-blue-400 mt-1 text-lg"></i><span class="font-medium text-white">Akses Panel Reseller</span></li>
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-blue-400 mt-1 text-lg"></i><span>Saldo Awal 20 Lisensi Bulanan</span></li>
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-blue-400 mt-1 text-lg"></i><span>Restock Modal Super Murah</span></li>
+                            <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-blue-400 mt-1 text-lg"></i><span>Grup Bimbingan Khusus</span></li>
+                        </ul>
+
+                        <button onclick="buyPackage('Reseller Pro (Upgrade)', 'Rp 2.500.000')" class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-dark-900 font-extrabold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)] transform hover:scale-[1.02] flex justify-center items-center gap-2 mt-auto">
+                            <i class="fa-brands fa-whatsapp text-xl"></i> Daftar Reseller
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -904,6 +1032,30 @@
         }
         window.addEventListener("scroll", reveal);
         setTimeout(reveal, 100);
+
+        // --- Live Stats Counter Animation (Simulasi Pengiriman Masif) ---
+        setInterval(() => {
+            const sentEl = document.getElementById('live-sent-count');
+            const queueEl = document.getElementById('live-queue-count');
+            
+            if(sentEl && queueEl) {
+                // Parse integer from string ex: "8,450" -> 8450
+                let sent = parseInt(sentEl.innerText.replace(/,/g, ''));
+                let queue = parseInt(queueEl.innerText.replace(/,/g, ''));
+                
+                // Add 1 to 3 new sent messages randomly
+                const sentNow = Math.floor(Math.random() * 3) + 1;
+                sent += sentNow;
+                queue -= sentNow;
+                
+                // Reset loop queue if it gets empty to keep animation alive
+                if(queue < 0) queue = 5000 + Math.floor(Math.random() * 1000); 
+                
+                // Update elements
+                sentEl.innerText = sent.toLocaleString('en-US');
+                queueEl.innerText = queue.toLocaleString('en-US');
+            }
+        }, 1200);
 
         // --- WhatsApp Direct Order Logic ---
         function buyPackage(packageName, price) {
